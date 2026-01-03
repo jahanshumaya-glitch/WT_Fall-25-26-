@@ -1,12 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Login Validation</title>
-</head>
-<body>
-
-<h1>Farmer Login</h1>
-
 <?php
 include "db.php";
 
@@ -15,19 +6,26 @@ $error = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST")
 {
-    $username = $_POST["username"];
-    $password = $_POST["password"];
+    $username = trim($_POST["username"]);
+    $password = trim($_POST["password"]);
 
     if (empty($username) || empty($password))
     {
-        $error = "Invalid do again";
+        $error = "Username and Password required";
+    }
+    elseif (!preg_match("/^[a-zA-Z]+$/", $username))
+    {
+        $error = "Username must contain only letters";
+    }
+    elseif (!preg_match("/^.{8,}$/", $password))
+    {
+        $error = "Password must be at least 8 characters";
     }
     else
     {
-        $hassPassword = password_hash($password, PASSWORD_DEFAULT);
+        $hashPassword = password_hash($password, PASSWORD_DEFAULT);
 
-        $sql = "INSERT INTO Farmer(User_Name, Password)
-                VALUES ('$username', '$hassPassword')";
+        $sql = "INSERT INTO Farmer(User_Name, Password) VALUES ('$username', '$hashPassword')";
 
         if ($conn->query($sql))
         {
@@ -35,17 +33,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         }
         else
         {
-            $error = "ERROR " . $conn->error;
+            $error = "ERROR: " . $conn->error;
         }
     }
 }
 ?>
 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Farmer Login</title>
+    <link rel="stylesheet" href="../CSS/style.css">
+</head>
+<body>
+
+<div class="box">
+<h1>Farmer Login</h1>
+
 <form method="post" action="">
-    Username:
+    Username:<br>
     <input type="text" name="username" value=""><br><br>
 
-    Password:
+    Password:<br>
     <input type="password" name="password" value=""><br><br>
 
     <input type="submit" value="Login">
@@ -56,6 +65,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 
 <br>
 <a href="register.html">Not Registered? Register</a>
+
+</div>
 
 </body>
 </html>
