@@ -2,29 +2,57 @@
 <html>
 <head>
     <title>Farmer Login</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../CSS/style.css">
 </head>
 <body>
 
 <div class="box">
-    <h1>Farmer Login</h1>
-    <p>Welcome to Smart_Farming</p>
+<h1>Farmer Login</h1>
 
-    <form method="post" action="login.php">
-        Username:
-        <input type="text" name="username" value=""><br><br>
+<form method="post" action="login.php" onsubmit="return validate()">
+Username:<br>
+<input type="text" name="username" id="username" value=""><br><br>
 
-        Password:
-        <input type="password" name="password" value=""><br><br>
+Password:<br>
+<input type="password" name="password" id="password" value=""><br><br>
 
-        <input type="submit" value="Login">
-    </form>
+<input type="submit" value="Login">
+</form>
 
-    <p class="register-text">
-        Username and Password not registered?
-        <a href="register.html">Register</a>
-    </p>
+<p id="error" style="color:red;"></p>
+<p>Not Registered? <a href="register.html" style="color:blue;">Register</a></p>
+
 </div>
+
+<script>
+function validate()
+{
+    var username = document.getElementById("username").value.trim();
+    var password = document.getElementById("password").value.trim();
+    var error = "";
+
+    if(username == "" || password == "")
+    {
+        error = "Username and Password required";
+    }
+    else if(!/^[a-zA-Z]+$/.test(username))
+    {
+        error = "Username must contain only letters";
+    }
+    else if(!/^.{8,}$/.test(password))
+    {
+        error = "Password must be at least 8 characters";
+    }
+
+    if(error != "")
+    {
+        document.getElementById("error").innerHTML = error;
+        return false;
+    }
+
+    return true;
+}
+</script>
 
 </body>
 </html>

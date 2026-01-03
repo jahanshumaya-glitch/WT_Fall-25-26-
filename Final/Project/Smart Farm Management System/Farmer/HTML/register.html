@@ -2,44 +2,91 @@
 <html>
 <head>
     <title>Farmer Registration</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../CSS/style.css">
 </head>
 <body>
 
 <div class="box">
 <h1>Farmer Registration</h1>
 
-<form method="post" action="register.php">
+<form method="post" action="register.php" onsubmit="return validate()">
 
-Name:
-<input type="text" name="name" value=""><br><br>
+Name:<br>
+<input type="text" name="name" id="name" value=""><br><br>
 
-User Name:
-<input type="text" name="username" value=""><br><br>
+User Name:<br>
+<input type="text" name="username" id="username" value=""><br><br>
 
-Password:
-<input type="password" name="password" value=""><br><br>
+Password:<br>
+<input type="password" name="password" id="password" value=""><br><br>
 
-Confirm Password:
-<input type="password" name="cpassword" value=""><br><br>
+Confirm Password:<br>
+<input type="password" name="cpassword" id="cpassword" value=""><br><br>
 
-Email:
-<input type="email" name="email" value=""><br><br>
+Email:<br>
+<input type="email" name="email" id="email" value=""><br><br>
 
-Number:
-<input type="text" name="number" value=""><br><br>
+Number:<br>
+<input type="text" name="number" id="number" value=""><br><br>
 
-Address:
-<input type="text" name="address" value=""><br><br>
+Address:<br>
+<input type="text" name="address" id="address" value=""><br><br>
 
-Date of Birth:
-<input type="date" name="dob" value=""><br><br>
+Date of Birth:<br>
+<input type="date" name="dob" id="dob" value=""><br><br>
 
 <input type="submit" value="Register">
 
 </form>
 
+<p id="error" style="color:red;"></p>
+<p>Already Registered? <a href="login.html" style="color:blue;">Login</a></p>
+
 </div>
+
+<script>
+function validate()
+{
+    var name = document.getElementById("name").value.trim();
+    var username = document.getElementById("username").value.trim();
+    var password = document.getElementById("password").value.trim();
+    var cpassword = document.getElementById("cpassword").value.trim();
+    var email = document.getElementById("email").value.trim();
+    var number = document.getElementById("number").value.trim();
+    var address = document.getElementById("address").value.trim();
+    var dob = document.getElementById("dob").value.trim();
+    var error = "";
+
+    if(name == "" || username == "" || password == "" || cpassword == "" ||
+       email == "" || number == "" || address == "" || dob == "")
+    {
+        error = "Please fill in all fields";
+    }
+    else if(!/^[a-zA-Z ]+$/.test(name))
+    {
+        error = "Name can only contain letters and spaces";
+    }
+    else if(password != cpassword)
+    {
+        error = "Password and Confirm Password do not match";
+    }
+    else if(!/^[^@]+@[^@]+\.[^@]+$/.test(email))
+    {
+        error = "Email must contain @";
+    }
+    else if(!/^[0-9]{11}$/.test(number))
+    {
+        error = "Phone number must contain exactly 11 digits";
+    }
+
+    if(error != "")
+    {
+        document.getElementById("error").innerHTML = error;
+        return false;
+    }
+    return true;
+}
+</script>
 
 </body>
 </html>
